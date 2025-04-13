@@ -1,6 +1,8 @@
 package es.studium.loginapirest_huellaapp
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.StrictMode
 import android.text.InputType
@@ -12,7 +14,13 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.biometric.BiometricManager
+import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
+import androidx.biometric.BiometricManager.Authenticators.DEVICE_CREDENTIAL
+import androidx.biometric.BiometricPrompt
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import org.json.JSONArray
@@ -24,27 +32,33 @@ class MainActivity : AppCompatActivity() {
 
     //declaramos botones var= variable que puede cambiar, lateinit= permite no asignar
     //un valor en el momento
-    private lateinit var btnLoging : Button
-    private lateinit var btnAlta : Button
-    private lateinit var btnBiometrico : Button
-    private lateinit var txtUsu : EditText
-    private lateinit var txtPass : EditText
-    private lateinit var usuario : String
+    private lateinit var btnLoging: Button
+    private lateinit var btnAlta: Button
+    private lateinit var btnBiometrico: Button
+    private lateinit var txtUsu: EditText
+    private lateinit var txtPass: EditText
+    private lateinit var usuario: String
     private lateinit var password: String
-    private lateinit var chkMostrar : CheckBox
-    private lateinit var result : JSONArray
-    private lateinit var jsonObject : JSONObject
+    private lateinit var chkMostrar: CheckBox
+    private lateinit var result: JSONArray
+    private lateinit var jsonObject: JSONObject
 
     var idUsuarioBD: String = "0"
-    private lateinit var nombreUsuarioBD : String
-    private lateinit var claveUsuarioBD : String
+    private lateinit var nombreUsuarioBD: String
+    private lateinit var claveUsuarioBD: String
     private lateinit var tipoUsuarioBD: String
 
-    private lateinit var datosUsuarioCorrecto : ModeloUsuario
-    private var credencialesCorrectas : Boolean = false
+    private lateinit var datosUsuarioCorrecto: ModeloUsuario
+    private var credencialesCorrectas: Boolean = false
 
-    private lateinit var lbl_comprobacionusuario : TextView
-    private lateinit var lbl_comprobacionPass : TextView
+    private lateinit var lbl_comprobacionusuario: TextView
+    private lateinit var lbl_comprobacionPass: TextView
+
+    //Constantes necesarias para las shared Preferences
+    val MyPREFERENCES = "credenciales_Acceso"
+    val USUARIO_KEY = "usuario_guardado"
+    val PASS_KEY = "password_guardada"
+    private lateinit var shared: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,7 +81,7 @@ class MainActivity : AppCompatActivity() {
             password = txtPass.text.toString()
 
             //------------------------------Comunicación con la API-------------------------------------
-            if(android.os.Build.VERSION.SDK_INT > 9){
+            if (android.os.Build.VERSION.SDK_INT > 9) {
                 val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
                 StrictMode.setThreadPolicy(policy)
             }
@@ -76,13 +90,13 @@ class MainActivity : AppCompatActivity() {
 
 
             //Verificamos que result no está vacío
-            try{
+            try {
                 //Reseteo los textviews desede el principio por si se ha realizado
                 //Un acceso correcto y se quieren realizar otros incorrectos
                 lbl_comprobacionusuario.text = "Acceso denegado"
                 lbl_comprobacionPass.text = "Acceso denegado"
 
-                if(result.length() > 0){
+                if (result.length() > 0) {
                     for (i in 0 until result.length()) {
                         jsonObject = result.getJSONObject(i)
                         idUsuarioBD = jsonObject.getString("idUsuario")
@@ -90,73 +104,125 @@ class MainActivity : AppCompatActivity() {
                         claveUsuarioBD = jsonObject.getString("claveUsuario")
                         tipoUsuarioBD = jsonObject.getString("tipoUsuario")
 
-                        if ((nombreUsuarioBD==usuario) and (claveUsuarioBD == convertirASHA256(password))){
+                        if ((nombreUsuarioBD == usuario) and (claveUsuarioBD == convertirASHA256(
+                                password
+                            ))
+                        ) {
                             lbl_comprobacionusuario.text = nombreUsuarioBD
                             lbl_comprobacionPass.text = claveUsuarioBD
-                            datosUsuarioCorrecto = ModeloUsuario(idUsuarioBD.toInt(), nombreUsuarioBD,claveUsuarioBD, tipoUsuarioBD.toInt())
+                            datosUsuarioCorrecto = ModeloUsuario(
+                                idUsuarioBD.toInt(),
+                                nombreUsuarioBD,
+                                claveUsuarioBD,
+                                tipoUsuarioBD.toInt()
+                            )
                             credencialesCorrectas = true
                             break //<-- salimos del bucle
                         }
                     }
                     Log.d("DEBUG", "HASH ENVIADO: ${convertirASHA256(password)}")
                     Log.d("DEBUG", "HASH BD: $claveUsuarioBD")
-                }
-                else{
+                } else {
                     Log.e("MainActivity", "El JSONObject está vacío")
                 }
-            }
-            catch(e : JSONException){
+            } catch (e: JSONException) {
                 Log.e("MainActivity", "Error al procesar el JSON", e)
             }
             //------------------------------------------------------------------------------------------
 
             //-------> CONTROL DE ERRORES IRÍA AQUÍ: Campos vacíos <-----------
 
-            if(credencialesCorrectas){
-               Toast.makeText(this,"CREDENCIALES CORRECTAS", Toast.LENGTH_SHORT).show()
-               //Reseteo de credenciales correctas
-               credencialesCorrectas = false
+            if (credencialesCorrectas) {
+                Toast.makeText(this, "CREDENCIALES CORRECTAS", Toast.LENGTH_SHORT).show()
+                //Reseteo de credenciales correctas
+                credencialesCorrectas = false
 
-                val bundle = Bundle()
-                bundle.putString("idUsuario", idUsuarioBD)
-                bundle.putString("nombreUsuario", nombreUsuarioBD)
-                bundle.putString("claveUsuario", claveUsuarioBD)
-                bundle.putString("tipoUsuario", tipoUsuarioBD)
+                //Comprobación de si hay shared preferences guardadas
+                shared = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE)
+                val isShared = shared.getString(USUARIO_KEY, "")
 
-                val intent = Intent(this, SecondaryActivity::class.java)
-                intent.putExtras(bundle)
-                startActivity(intent)
-           }
-            else{
-               Toast.makeText(this,"CREDENCIALES INCORRECTAS", Toast.LENGTH_SHORT).show()
-           }
+                //Hay S-P guardadas. el usuario quiere entrar con usu y pass. No se le pregunta siquiere guardar
+                //Dos Opciones;
+                //1. Quiere entrar el mismo usuario que las dejó guardadas
+                //2. Quiere entrar un usuario nuevo
+                if (!isShared.isNullOrEmpty()) {
+
+                    //1. Mismo usuario
+                    if (usuario == shared.getString(USUARIO_KEY, "")) {
+                        enviarIntent()
+                    }
+                    //2. Distinto usuario
+                    else {
+                        mostrarDialogoSobrescribirCredenciales(usuario, password)
+                    }
+
+                } else {
+                    mostrarDialogoGuardarCredenciales(usuario, password)
+                }
+
+            } else {
+                Toast.makeText(this, "CREDENCIALES INCORRECTAS", Toast.LENGTH_SHORT).show()
+            }
         }
 
         btnAlta.setOnClickListener {
-            Toast.makeText(this,"Botón Alta presionado",Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Botón Alta presionado", Toast.LENGTH_SHORT).show()
             val intentAlta = Intent(this, AltaActivity::class.java)
             startActivity(intentAlta)
         }
 
         btnBiometrico.setOnClickListener {
-            Toast.makeText(this,"Botón Biométrico presionado",Toast.LENGTH_SHORT).show()
+            //Dos opciones:
+            //1. No existen credenciales guardadas
+            //2. Existen credenciales guardadas
+
+            //1. Existen credenciales guardadas - Entrada por huella habilitada
+            shared = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE)
+            val isShared = shared.getString(USUARIO_KEY, "")
+            if (!isShared.isNullOrEmpty()) {
+                //1. Comprobar que el dispositivo tenga el hardware adecuado
+                val biometricManager = BiometricManager.from(this)
+
+                when (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG or DEVICE_CREDENTIAL)) {
+                    //1. El dispositivo cuenta con el hardware adecuado.
+                    BiometricManager.BIOMETRIC_SUCCESS -> {
+                        showBiometricPrompt()
+                        //aquí iria el acceso a la aplicación.
+                    }
+                    //2. El dispositivo no cuenta con el hardware adecuado.
+                    BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE -> {
+                        showToast("No hay hardware biométrico.")
+                    }
+                    //3. El hardware biométrico no está disponible
+                    BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE -> {
+                        showToast("Hardware biométrico no disponible.")
+                    }
+                    //4. El dispositivo cuenta con hardware biométrico pero no hay huella registrada
+                    BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> {
+                        showToast("No hay biometría registrada.")
+                    }
+                }
+            }
+            else{
+                Toast.makeText(this,"No es posible el acceso biométrico. Debe guardar sus credenciales",Toast.LENGTH_SHORT).show()
+            }
         }
 
         //Gestíón Mostrar/ocultar contraseña
         chkMostrar.setOnClickListener {
-            if(chkMostrar.isChecked){
+            if (chkMostrar.isChecked) {
                 txtPass.inputType = InputType.TYPE_CLASS_TEXT
                 txtPass.setSelection(txtPass.text.length)
-            }
-            else{
+            } else {
                 //Hace que el edit text admita texto (1) y por otro lado que ese texto se convierta en contraseña (2)
-                txtPass.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+                txtPass.inputType =
+                    InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
                 txtPass.setSelection(txtPass.text.length)
             }
         }
 
         // Hacer que la aplicación se ejecute en modo inmersivo
-       // hideSystemUI()
+        // hideSystemUI()
 
     }
 
@@ -192,5 +258,107 @@ class MainActivity : AppCompatActivity() {
 
         // Convertir los bytes a una cadena hexadecimal
         return hashBytes.joinToString("") { "%02x".format(it) }
+    }
+
+    //Métodos para mostrar el prompt de huella digital
+    private fun showBiometricPrompt() {
+        val executor = ContextCompat.getMainExecutor((this))
+        val biometricPrompt = BiometricPrompt(this, executor,
+            object : BiometricPrompt.AuthenticationCallback() {
+                override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
+                    super.onAuthenticationSucceeded(result)
+                    showToast("Autenticación exitosa")
+                    //Si la autenticación es exitosa, metemos los datos desde las
+                    //Shared preferences y simulamos un click del btn login
+                    shared = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE)
+                    val isShared = shared.getString(USUARIO_KEY, "")
+                    if (!isShared.isNullOrEmpty()){
+                        txtUsu.setText(shared.getString(USUARIO_KEY,""))
+                        txtPass.setText(shared.getString(PASS_KEY,""))
+                        btnLoging.performClick()
+                    }
+
+                }
+
+                override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
+                    super.onAuthenticationError(errorCode, errString)
+                    showToast("Error $errString")
+                }
+
+                override fun onAuthenticationFailed() {
+                    super.onAuthenticationFailed()
+                    showToast("Autenticación fallida")
+                }
+            })
+        val promptInfo = BiometricPrompt.PromptInfo.Builder()
+            .setTitle("Autenticación Biométrica")
+            .setSubtitle("Usa tu huella digital para continuar")
+            .setDescription("descripcion")
+            //.setNegativeButtonText("Cancelar")
+            .setAllowedAuthenticators(BIOMETRIC_STRONG or DEVICE_CREDENTIAL)
+            .build()
+
+        biometricPrompt.authenticate(promptInfo)
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+    }
+
+    // Muestra un diálogo de confirmación para guardar las credenciales tras el primer login exitoso
+    private fun mostrarDialogoGuardarCredenciales(usuario: String, clave: String) {
+        AlertDialog.Builder(this)
+            .setTitle("Guardar credenciales")
+            .setMessage("¿Deseas guardar tu usuario y contraseña para próximos accesos con huella?")
+            .setPositiveButton("Sí") { _, _ ->
+                // Si el usuario acepta, guardamos las credenciales de forma segura
+                guardarCredenciales(this, usuario, clave)
+                Toast.makeText(this, "Credenciales guardadas con éxito", Toast.LENGTH_SHORT).show()
+                enviarIntent()
+            }
+            .setNegativeButton("No") { _, _ ->
+                enviarIntent()
+            }
+            .show()
+
+    }
+
+    // Muestra un diálogo para confirmar si se quieren sobrescribir las credenciales ya existentes
+    private fun mostrarDialogoSobrescribirCredenciales(usuario: String, clave: String) {
+        AlertDialog.Builder(this)
+            .setTitle("Sobrescribir credenciales")
+            .setMessage("Ya existen credenciales guardadas. ¿Deseas sobrescribirlas con las nuevas?")
+            .setPositiveButton("Sí") { _, _ ->
+                guardarCredenciales(this, usuario, clave)
+                Toast.makeText(this, "Credenciales actualizadas con éxito", Toast.LENGTH_SHORT)
+                    .show()
+                enviarIntent()
+            }
+            .setNegativeButton("No") { _, _ ->
+                enviarIntent()
+            }
+            .show()
+
+    }
+
+    fun guardarCredenciales(context: Context, usuario: String, password: String) {
+        val prefs = context.getSharedPreferences("credenciales_Acceso", Context.MODE_PRIVATE)
+
+        prefs.edit()
+            .putString("usuario_guardado", usuario)
+            .putString("password_guardada", password)
+            .apply()
+    }
+
+    private fun enviarIntent() {
+        val bundle = Bundle()
+        bundle.putString("idUsuario", idUsuarioBD)
+        bundle.putString("nombreUsuario", nombreUsuarioBD)
+        bundle.putString("claveUsuario", claveUsuarioBD)
+        bundle.putString("tipoUsuario", tipoUsuarioBD)
+
+        val intent = Intent(this, SecondaryActivity::class.java)
+        intent.putExtras(bundle)
+        startActivity(intent)
     }
 }

@@ -30,6 +30,7 @@ class AltaActivity : AppCompatActivity() {
     private lateinit var claveUsuarioBD : String
     private lateinit var tipoUsuarioBD: String
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_alta)
