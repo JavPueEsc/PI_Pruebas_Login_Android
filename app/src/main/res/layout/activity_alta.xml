@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AltaActivity">
+
+    <View
+        android:id="@+id/rectangulo_izqInf2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/rectangulo_fondo_azul"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/lbl_advertencia"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:text="Los campos marcados con * son obligatorios."
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/rectangulo_izqInf2"
+        app:layout_constraintEnd_toEndOf="@+id/rectangulo_izqInf2"
+        app:layout_constraintHorizontal_bias="0.491"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lbl_tituloNuevaCuenta"
+        app:layout_constraintVertical_bias="0.96" />
+
+    <EditText
+        android:id="@+id/txt_pass2Alta"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Contraseña*"
+        android:inputType="textPassword"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.459"
+        app:layout_constraintStart_toStartOf="@+id/rectangulo_izqInf2"
+        app:layout_constraintTop_toBottomOf="@+id/lbl_aclaracionPass"
+        app:layout_constraintVertical_bias="0.486" />
+
+    <TextView
+        android:id="@+id/lbl_preguntaPass2"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:text="Repita la contraseña."
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/rectangulo_izqInf2"
+        app:layout_constraintEnd_toEndOf="@+id/rectangulo_izqInf2"
+        app:layout_constraintHorizontal_bias="0.459"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lbl_tituloNuevaCuenta"
+        app:layout_constraintVertical_bias="0.616" />
+
+    <TextView
+        android:id="@+id/lbl_aclaracionPass"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:text="La contraseña debe tener al menos 6 caracteres."
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/rectangulo_izqInf2"
+        app:layout_constraintEnd_toEndOf="@+id/rectangulo_izqInf2"
+        app:layout_constraintHorizontal_bias="0.459"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lbl_tituloNuevaCuenta"
+        app:layout_constraintVertical_bias="0.419" />
+
+    <TextView
+        android:id="@+id/lbl_preguntaPass1"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:text="Escriba una contraseña segura."
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/rectangulo_izqInf2"
+        app:layout_constraintEnd_toEndOf="@+id/rectangulo_izqInf2"
+        app:layout_constraintHorizontal_bias="0.464"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lbl_tituloNuevaCuenta"
+        app:layout_constraintVertical_bias="0.343" />
+
+    <TextView
+        android:id="@+id/lbl_preguntaNombre"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:text="¿Qué nombre de usuario/a desea utilizar?"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/rectangulo_izqInf2"
+        app:layout_constraintEnd_toEndOf="@+id/rectangulo_izqInf2"
+        app:layout_constraintHorizontal_bias="0.464"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lbl_tituloNuevaCuenta"
+        app:layout_constraintVertical_bias="0.171" />
+
+    <TextView
+        android:id="@+id/lbl_subTituloDatosAcceso"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Datos de Acceso"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/rectangulo_izqInf2"
+        app:layout_constraintEnd_toEndOf="@+id/rectangulo_izqInf2"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lbl_tituloNuevaCuenta"
+        app:layout_constraintVertical_bias="0.041" />
+
+    <TextView
+        android:id="@+id/lbl_tituloNuevaCuenta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nueva cuenta de usuario"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/rectangulo_izqInf2"
+        app:layout_constraintEnd_toEndOf="@+id/rectangulo_izqInf2"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.068" />
+
+    <EditText
+        android:id="@+id/txt_nombreUsuarioAlta"
+        android:layout_width="350dp"
+        android:layout_height="46dp"
+        android:ems="10"
+        android:hint="Nombre de usuario*"
+        android:inputType="text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.46"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lbl_preguntaNombre"
+        app:layout_constraintVertical_bias="0.039" />
+
+    <EditText
+        android:id="@+id/txt_pass1Alta"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Contraseña*"
+        android:inputType="textPassword"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.459"
+        app:layout_constraintStart_toStartOf="@+id/rectangulo_izqInf2"
+        app:layout_constraintTop_toBottomOf="@+id/lbl_aclaracionPass"
+        app:layout_constraintVertical_bias="0.086" />
+
+    <Button
+        android:id="@+id/btn_AceptarAlta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Aceptar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_pass2Alta"
+        app:layout_constraintVertical_bias="0.305" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

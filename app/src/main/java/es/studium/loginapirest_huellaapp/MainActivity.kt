@@ -74,8 +74,6 @@ class MainActivity : AppCompatActivity() {
             var accesoRemotoUsuarios = AccesoRemotoUsuarios()
             result = accesoRemotoUsuarios.obtenerListado()
 
-            //Creamos lista vacía
-            //lateinit var listaUsuarios : ArrayList<ModeloUsuario>
 
             //Verificamos que result no está vacío
             try{
@@ -136,6 +134,8 @@ class MainActivity : AppCompatActivity() {
 
         btnAlta.setOnClickListener {
             Toast.makeText(this,"Botón Alta presionado",Toast.LENGTH_SHORT).show()
+            val intentAlta = Intent(this, AltaActivity::class.java)
+            startActivity(intentAlta)
         }
 
         btnBiometrico.setOnClickListener {

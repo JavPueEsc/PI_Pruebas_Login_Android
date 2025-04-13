@@ -16,6 +16,9 @@
         android:theme="@style/Theme.LoginApiRest_HuellaApp"
         tools:targetApi="31">
         <activity
+            android:name=".AltaActivity"
+            android:exported="false" />
+        <activity
             android:name=".SecondaryActivity"
             android:exported="false" />
         <activity
