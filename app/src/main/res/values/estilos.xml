@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--Estilo de la barra de título-->
+    <style name="Estilo_BarraTitulo" parent="Widget.AppCompat.ActionBar">
+        <item name="background">@color/AppGris</item>
+        <item name="titleTextStyle">@style/Estilo_TextoBarraTitulo</item>
+    </style>
+
+    <!--Estilo texto barra titulo-->
+    <style name="Estilo_TextoBarraTitulo" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/AppNaranjaClaro</item>
+        <item name="android:textSize">34sp</item>
+        <item name="android:textStyle">italic</item>
+    </style>
+
+    <!--Textos de la app-->
+    <style name="Texto" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textSize">17sp</item>
+    </style>
+
+    <style name="Texto.gris" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textSize">17sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/AppGris</item>
+    </style>
+
+    <style name="Texto.grande" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textSize">40sp</item>
+        <item name="android:textStyle">bold|italic</item>
+        <item name="android:textColor">@color/AppAzul</item>
+    </style>
+
+    <!--Botón Loggin-->
+    <style name="BotonLogin" parent="Widget.Material3.Button">
+        <item name="android:textColor">@color/AppNaranjaOscuro</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:backgroundTint">@color/AppAzul</item>
+    </style>
+
+</resources>

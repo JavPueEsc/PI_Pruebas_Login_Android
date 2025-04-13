@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SecondaryActivity">
+
+    <View
+        android:id="@+id/rectangulo_izqInf"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/rectangulo_fondo_azul"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/rectangulo_izqInf2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/rectangulo_fondo_azul"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/lbl_tipoAcceso"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="tipoUsuario"
+        android:textColor="@color/AppRojo"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/rectangulo_izqInf"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.389"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.882" />
+
+    <TextView
+        android:id="@+id/lbl_claveAcceso"
+        android:layout_width="315dp"
+        android:layout_height="281dp"
+        android:text="claveUsuario"
+        android:textColor="@color/AppRojo"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/rectangulo_izqInf"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.552"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.713" />
+
+    <TextView
+        android:id="@+id/lbl_usuarioAcceso"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="nombreUsuario"
+        android:textColor="@color/AppRojo"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/rectangulo_izqInf"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.545"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.302" />
+
+    <TextView
+        android:id="@+id/lbl_idAcceso"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="idUsuario"
+        android:textColor="@color/AppRojo"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/rectangulo_izqInf"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.285"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lbl_tituloAcceso"
+        app:layout_constraintVertical_bias="0.072" />
+
+    <TextView
+        android:id="@+id/lbl_tituloTipo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tipo: "
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/rectangulo_izqInf"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.146"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.882" />
+
+    <TextView
+        android:id="@+id/lbl_tituloClave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Clave:"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/rectangulo_izqInf"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.147"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.404" />
+
+    <TextView
+        android:id="@+id/lbl_tituloAcceso"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Acceso autorizado a:"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/rectangulo_izqInf"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="@+id/rectangulo_izqInf"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.11" />
+
+    <TextView
+        android:id="@+id/lbl_tituloID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Id:"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/rectangulo_izqInf"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.136"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lbl_tituloAcceso"
+        app:layout_constraintVertical_bias="0.072" />
+
+    <TextView
+        android:id="@+id/lbl_tituloNombre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Usuario: "
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/rectangulo_izqInf"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.159"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.303" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

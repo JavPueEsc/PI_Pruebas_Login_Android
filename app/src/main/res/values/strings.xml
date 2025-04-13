@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">LoginApiRest_HuellaApp</string>
+    <string name="usuario">Introduzca su nombre de usuario</string>
+    <string name="hint_usuario">Usuario</string>
+    <string name="Pass">Introduzca su contraseña</string>
+    <string name="hint_pass">Contraseña</string>
+    <string name="btn_login">Login</string>
+    <string name="btn_alta">Alta</string>
+    <string name="btn_Biometrico">Acceso Huella</string>
+    <string name="mostrar_contraseña">Mostrar contraseña</string>
+    <string name="btnSwitch_guardar">Guardar credenciales</string>
+
+    <!-- Errores-->
+    <string name="error_usuario">El usuario introducido no es correcto.</string>
+    <string name="error_pass">La contraseña introducida no es correcta.</string>
+
+    <string name="usuario_vacio">El campo Usuario está vacío.</string>
+    <string name="pass_vacia">El campo Contraseña está vacío.</string>
+
+
+    <!-- Usuario y Contraseña vádilos -->
+    <string name="coincidencia">Usuario y contraseña correctos.</string>
+
+    <!-- Usuario y Contraseña vádilos -->
+    <string name="guardado_credenciales">Credenciales guardadas.</string>
+
+    <!-- Mensaje no s epuede volver atrás-->
+    <string name="No_retorno">Para poder volver atrás debe borrar sus credenciales.</string>
+
+    <!-- Actividad Secundaria-->
+    <string name="lbl_borrar_credenciales">Borrar credenciales.</string>
+    <string name="credenciales_borradas">Credenciales borradas.</string>
+    <string name="Bienvenido">Bienvenido de nuevo</string>
+</resources>
